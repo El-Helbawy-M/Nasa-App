@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:nasa_wind_app/router/navigator.dart';
+import 'package:nasa_wind_app/router/routes.dart';
+
+import 'helpers/localization.dart';
+import 'modules/turbine_details/pages/turbineDetails.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,18 +19,41 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
+        fontFamily: "default",
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: Routes.main,
+      // home: TurbineDetailsPage(),
+      navigatorKey: CustomNavigator.navigatorState,
+      navigatorObservers: [CustomNavigator.routeObserver],
+      scaffoldMessengerKey: CustomNavigator.scaffoldState,
+      onGenerateRoute: CustomNavigator.onCreateRoute,
+
+      // to tell the app what the language should support
+      supportedLocales: const [Locale("en"), Locale("ar")],
+
+      // to tell the app what the components should follow the determined language
+      localizationsDelegates: const [
+        AppLocale.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: const Locale("en"),
+
+      // this is a callback, it's executed when the user open the app or change the localaization of the mobile
+      // what is its jop?
+      // : it cheks if what is the current language of the mobile and return it for the app to follow it
+      // : it cheks too if the user specified any language he need even if it's not same as the mobile language is
+      localeResolutionCallback: (currentLang, supportedLangs) {
+        // String? savedLgnCode = pref!.getString("lgnCode");
+        if (currentLang != null) {
+          for (Locale locale in supportedLangs) {
+            if (locale.languageCode == currentLang.languageCode) return locale;
+          }
+        }
+        return supportedLangs.first;
+      },
     );
   }
 }

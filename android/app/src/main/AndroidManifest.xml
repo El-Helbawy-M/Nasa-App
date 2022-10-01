@@ -1,9 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.nasa_wind_app">
-   <application
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application
         android:label="nasa_wind_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        
+        <meta-data android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyB34NOLUAx8ZpfgY2PGzG6LJr9K1V8facU"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
